@@ -61,6 +61,37 @@ public class UMPDecoder {
         return result;
     }
 
+    //private long readVarInt(StreamWrapper input) throws IOException, InterruptedException {
+    //    // https://web.archive.org/web/20250430054327/https://github.com/gsuberland/UMP_Format/blob/main/UMP_Format.md
+    //    // https://web.archive.org/web/20250429151021/https://github.com/davidzeng0/innertube/blob/main/googlevideo/ump.md
+    //    byte[] buffer = new byte[1];
+    //    if (!input.readFully(buffer, 0, 1, true)) {
+    //        return -1; // clean EOF before reading anything
+    //    }
+    //
+    //    long first = buffer[0] & 0xFF;
+    //    int size = varIntSize(first);
+    //
+    //    if (size < 1 || size > 5) {
+    //        throw new IOException("Invalid VarInt size: " + size);
+    //    }
+    //
+    //    int payloadBits = 8 - (size + 1);
+    //    long result = first & ((1L << payloadBits) - 1);
+    //    int shift = payloadBits;
+    //
+    //    for (int i = 1; i < size; i++) {
+    //        if (!input.readFully(buffer, 0, 1, true)) {
+    //            throw new EOFException("Unexpected EOF in VarInt");
+    //        }
+    //        long b = buffer[0] & 0xFF;
+    //        result |= b << shift;
+    //        shift += 8;
+    //    }
+    //
+    //    return result;
+    //}
+
     public long readVarInt(ExtractorInput input) throws IOException, InterruptedException {
         return readVarInt(input::readFully);
     }

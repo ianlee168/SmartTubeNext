@@ -131,13 +131,18 @@ public class VideoLoaderController extends BasePlayerController {
         } else if ((!getVideo().isLive || getVideo().isLiveEnd)
                 && getPlayer().getDurationMs() - getPlayer().getPositionMs() < STREAM_END_THRESHOLD_MS) {
             getMainController().onPlayEnd();
-        } else if (!getVideo().isLive && !getVideo().isLiveEnd && !getPlayerTweaksData().isNetworkErrorFixingDisabled()) {
-            MessageHelpers.showLongMessage(getContext(), R.string.playback_buffering_fix);
-            YouTubeServiceManager.instance().invalidateCache();
-            // Faster source is different among devices. Try them one by one.
-            switchNextEngine();
-            restartEngine();
+        } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
+            YouTubeServiceManager.instance().applyNoPlaybackFix();
+            reloadVideo();
         }
+        //} else if (!getVideo().isLive && !getVideo().isLiveEnd && !getPlayerTweaksData().isNetworkErrorFixingDisabled()) {
+        //    MessageHelpers.showLongMessage(getContext(), R.string.playback_buffering_fix);
+        //    //YouTubeServiceManager.instance().invalidateCache();
+        //    YouTubeServiceManager.instance().applyNoPlaybackFix();
+        //    // Faster source is different among devices. Try them one by one.
+        //    switchNextEngine();
+        //    restartEngine();
+        //}
     }
 
     @Override
@@ -370,7 +375,7 @@ public class VideoLoaderController extends BasePlayerController {
                 return;
             }
 
-            player.setTitle(formatInfo.getPlayabilityStatus());
+            player.setTitle(formatInfo.getPlayabilityReason());
             player.showProgressBar(false);
             mSuggestionsController.loadSuggestions(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
@@ -405,7 +410,7 @@ public class VideoLoaderController extends BasePlayerController {
             player.openUrlList(applyFix(formatInfo.createUrlList()));
         } else {
             Log.d(TAG, "Empty format info received. Seems future live translation. No video data to pass to the player.");
-            player.setTitle(formatInfo.getPlayabilityStatus());
+            player.setTitle(formatInfo.getPlayabilityReason());
             player.showProgressBar(false);
             mSuggestionsController.loadSuggestions(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
@@ -546,7 +551,8 @@ public class VideoLoaderController extends BasePlayerController {
             // No internet connection or WRONG DATE on the device
             // Recently this message starting to show for other reasons
             YouTubeServiceManager.instance().applyNoPlaybackFix(); // ?
-            restartEngine = false;
+            //switchNextEngine(); // ?
+            //restartEngine = false;
         } else if (error instanceof OutOfMemoryError || (error != null && error.getCause() instanceof OutOfMemoryError)) {
             if (getPlayerTweaksData().getPlayerDataSource() == PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP) {
                 // OkHttp has memory leak problems
@@ -737,9 +743,7 @@ public class VideoLoaderController extends BasePlayerController {
                 if (mPlaylist.getNext() != null) {
                     loadNext();
                 } else {
-                    getPlayer().setPositionMs(getPlayer().getDurationMs());
-                    getPlayer().setPlayWhenReady(false);
-                    getPlayer().showSuggestions(true);
+                    stopPlayback();
                 }
                 break;
             case PlayerConstants.PLAYBACK_MODE_LIST:
@@ -747,13 +751,24 @@ public class VideoLoaderController extends BasePlayerController {
                 if (video.hasNextPlaylist() || mPlaylist.getNext() != null) {
                     loadNext();
                 } else {
-                    restartPlaylistIfNeeded();
+                    //restartPlaylistIfNeeded();
+                    stopPlayback();
                 }
                 break;
             default:
                 Log.e(TAG, "Undetected repeat mode " + playbackMode);
                 break;
         }
+    }
+
+    private void stopPlayback() {
+        if (getPlayer() == null) {
+            return;
+        }
+
+        getPlayer().setPositionMs(getPlayer().getDurationMs());
+        getPlayer().setPlayWhenReady(false);
+        getPlayer().showSuggestions(true);
     }
 
     private void restartPlaylistIfNeeded() {
@@ -767,9 +782,7 @@ public class VideoLoaderController extends BasePlayerController {
             openVideoInt(group.get(0));
         } else {
             Log.e(TAG, "VideoGroup is null or empty. Can't restart playlist.");
-            getPlayer().setPositionMs(getPlayer().getDurationMs());
-            getPlayer().setPlayWhenReady(false);
-            getPlayer().showSuggestions(true);
+            stopPlayback();
         }
     }
 

@@ -16,4 +16,12 @@ public class UMPPart {
     public UMPInputStream toStream() {
         return new UMPInputStream(this);
     }
+
+    public void skip() {
+        try {
+            data.skipFully(size);
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot skip part with the id: " + partId + ", and size: " + size, e);
+        }
+    }
 }

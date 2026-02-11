@@ -81,6 +81,7 @@
     <string name="player_only_ui">Only UI</string>
     <string name="player_ui_and_pause">UI and pause</string>
     <string name="player_only_pause">Only pause</string>
+    <string name="player_toggle_speed">Toggle speed on/off</string>
     <string name="check_for_updates">Check for updates</string>
     <string name="update_not_found">You\'re using the latest version</string>
     <string name="update_in_progress">Wait…</string>
@@ -641,7 +642,7 @@
     <string name="play_next">Play next</string>
     <string name="hide_watched_from_subscriptions">Hide watched videos from Subscriptions</string>
     <string name="hide_watched_from_notifications">Hide watched videos from Notifications</string>
-    <string name="hide_unwanted_content">Hide videos</string>
+    <string name="hide_unwanted_content">Hide content</string>
     <string name="hide_watched_from_home">Hide watched videos from Home</string>
     <string name="hide_watched_from_watch_later">Hide watched videos from Watch later playlist</string>
     <string name="remote_control_permission">Background Remote control requires Overlay permission</string>
@@ -653,7 +654,9 @@
     <string name="channel_filter_hint">Filter channels</string>
     <string name="player_loop_shorts">Loop Shorts</string>
     <string name="player_quick_shorts_skip">Skip Shorts with left/right buttons</string>
+    <string name="player_quick_shorts_skip_alt">Skip Shorts with up/down buttons</string>
     <string name="player_quick_skip_videos">Skip regular videos with left/right buttons</string>
+    <string name="player_quick_skip_videos_alt">Skip regular videos with up/down buttons</string>
     <string name="channels_filter">Show Filter channels field inside Channels section</string>
     <string name="channel_search_bar">Search bar inside the Channel page</string>
     <string name="header_sports">Sports</string>
@@ -672,6 +675,7 @@
     <string name="fullscreen_mode">Fullscreen mode (without system bars)</string>
     <string name="player_only_mode">Show only the player if the video is opened outside of the app</string>
     <string name="pinned_channel_rows">Show pinned channel as rows</string>
+    <string name="prefer_google_dns">Prefer Google DNS</string>
     <string name="prefer_ipv4">Prefer IPv4 DNS</string>
     <string name="prefer_ipv4_desc">Could fix situations when the app isn\'t working at all.\nNote. May cause hangs and crashes (especially on Android 8 devices or Dune HD)</string>
     <string name="long_press_for_settings">LONG PRESS FOR SETTINGS</string>
@@ -717,4 +721,5 @@
     <string name="once_a_day">Once a day</string>
     <string name="once_a_week">Once a week</string>
     <string name="once_a_month">Once a month</string>
+    <string name="action_debug_info">Debug info</string>
 </resources>

@@ -29,9 +29,9 @@ import java.util.Map;
 
 public class PlayerData extends DataChangeBase implements PlayerConstants, ProfileChangeListener {
     private static final String VIDEO_PLAYER_DATA = "video_player_data";
-    public static final int ONLY_UI = 0;
-    public static final int UI_AND_PAUSE = 1;
-    public static final int ONLY_PAUSE = 2;
+    public static final int OK_ONLY_UI = 0;
+    public static final int OK_UI_AND_PAUSE = 1;
+    public static final int OK_ONLY_PAUSE = 2;
     public static final int AUTO_HIDE_NEVER = 0;
     public static final int SEEK_PREVIEW_NONE = 0;
     public static final int SEEK_PREVIEW_SINGLE = 1;
@@ -773,7 +773,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
         String[] split = Helpers.splitData(data);
 
-        mOKButtonBehavior = Helpers.parseInt(split, 0, ONLY_UI);
+        mOKButtonBehavior = Helpers.parseInt(split, 0, OK_ONLY_UI);
         mUiHideTimeoutSec = Helpers.parseInt(split, 1, 3);
         // mIsAbsoluteDateEnabled
         mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
@@ -845,6 +845,10 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         if (!mIsAllSpeedEnabled) {
             mSpeed = 1.0f;
         }
+    }
+
+    public void persistNow() {
+        Utils.post(mPersistStateInt);
     }
 
     private void persistState() {

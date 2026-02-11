@@ -81,6 +81,7 @@
     <string name="player_only_ui">Только интерфейс</string>
     <string name="player_ui_and_pause">Интерфейс и пауза</string>
     <string name="player_only_pause">Только пауза</string>
+    <string name="player_toggle_speed">Включение/выключение скорости</string>
     <string name="check_for_updates">Проверить обновление</string>
     <string name="update_not_found">Ваша версия не требует обновления</string>
     <string name="update_in_progress">Подождите…</string>
@@ -636,7 +637,7 @@
     <string name="play_next">Воспроизвести следующим</string>
     <string name="hide_watched_from_subscriptions">Скрывать просмотренные видео из Подписок</string>
     <string name="hide_watched_from_notifications">Скрывать просмотренные видео из Уведомлений</string>
-    <string name="hide_unwanted_content">Скрывать видео</string>
+    <string name="hide_unwanted_content">Скрывать содержимое</string>
     <string name="hide_watched_from_home">Скрывать просмотренные видео из Домашнего раздела</string>
     <string name="hide_watched_from_watch_later">Скрывать просмотренные видео из плейлиста Смотреть позже</string>
     <string name="remote_control_permission">Фоновое Дистанционное управление требует разрешения Перекрывать другие окна</string>
@@ -648,7 +649,9 @@
     <string name="channel_filter_hint">Фильтровать каналы</string>
     <string name="player_loop_shorts">Зацикливать shorts</string>
     <string name="player_quick_shorts_skip">Переключать shorts кнопками лево/право</string>
+    <string name="player_quick_shorts_skip_alt">Переключать shorts кнопками вверх/вниз</string>
     <string name="player_quick_skip_videos">Переключать обычные видео кнопками лево/право</string>
+    <string name="player_quick_skip_videos_alt">Переключать обычные видео кнопками вверх/вниз</string>
     <string name="channels_filter">Показывать поле Фильтровать каналы в разделе Каналы</string>
     <string name="channel_search_bar">Панель поиска на странице канала</string>
     <string name="header_sports">Спорт</string>
@@ -665,6 +668,7 @@
     <string name="fullscreen_mode">Полноэкранный режим (без системных панелей)</string>
     <string name="player_only_mode">Показывать только плеер, если видео открыто вне приложения</string>
     <string name="pinned_channel_rows">Отображать закрепленный канал в виде строк</string>
+    <string name="prefer_google_dns">Предпочитать Google DNS</string>
     <string name="prefer_ipv4">Предпочитать IPv4 DNS</string>
     <string name="prefer_ipv4_desc">Можеть исправить случаи, когда приложение вообще не работает.\nВнимание. На некоторых устройствах могут быть вылеты приложения (особенно на Android 8 и приставке Dune HD)</string>
     <string name="long_press_for_settings">ДЛИТЕЛЬНОЕ НАЖАТИЕ ДЛЯ НАСТРОЕК</string>
@@ -707,4 +711,5 @@
     <string name="once_a_day">Один раз в день</string>
     <string name="once_a_week">Один раз в неделю</string>
     <string name="once_a_month">Один раз в месяц</string>
+    <string name="action_debug_info">Отладочная информация</string>
 </resources>

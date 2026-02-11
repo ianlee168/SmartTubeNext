@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.util.Pair;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import com.google.android.exoplayer2.Format;
@@ -40,6 +41,7 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import org.chromium.net.ApiVersion;
@@ -261,6 +263,17 @@ public final class DebugInfoManager implements Runnable, Player.EventListener {
         String videoCodecName = getVideoDecoderNameV2();
         mVideoInfo.add(new Pair<>("Video decoder name", videoCodecName));
         mVideoInfo.add(new Pair<>("Hardware accelerated", String.valueOf(DeviceHelpers.isHardwareAccelerated(videoCodecName))));
+        
+        if (video.colorInfo != null) {
+            String transferFunction = getColorTransferString(video.colorInfo.colorTransfer);
+            if (!transferFunction.equals(NOT_AVAILABLE)) {
+                mVideoInfo.add(new Pair<>("Transfer function", transferFunction));
+            }
+            String colorSpace = getColorSpaceString(video.colorInfo.colorSpace);
+            if (!colorSpace.equals(NOT_AVAILABLE)) {
+                mVideoInfo.add(new Pair<>("Color space", colorSpace));
+            }
+        }
     }
 
     private void appendRuntimeInfo() {
@@ -369,7 +382,10 @@ public final class DebugInfoManager implements Runnable, Player.EventListener {
     }
 
     private void appendVideoInfoType() {
-        appendRow("Video info type", MediaServiceData.instance().getVideoInfoType());
+        int videoInfoType = MediaServiceData.instance().getVideoInfoType();
+        String infoName = videoInfoType != -1 && videoInfoType < AppClient.values().length ? AppClient.values()[videoInfoType].name() : "default";
+
+        appendRow("Video info type", infoName);
     }
 
     private void appendVideoInfoVersion() {
@@ -475,6 +491,40 @@ public final class DebugInfoManager implements Runnable, Player.EventListener {
 
     private String getVideoDecoderNameV2() {
         return ExoUtils.getVideoDecoderName();
+    }
+
+    private String getColorTransferString(int colorTransfer) {
+        if (colorTransfer == Format.NO_VALUE) {
+            return NOT_AVAILABLE;
+        }
+
+        switch (colorTransfer) {
+            case C.COLOR_TRANSFER_SDR:
+                return "Gamma";
+            case C.COLOR_TRANSFER_ST2084:
+                return "PQ (ST.2084)";
+            case C.COLOR_TRANSFER_HLG:
+                return "HLG";
+            default:
+                return NOT_AVAILABLE;
+        }
+    }
+
+    private String getColorSpaceString(int colorSpace) {
+        if (colorSpace == Format.NO_VALUE) {
+            return NOT_AVAILABLE;
+        }
+
+        switch (colorSpace) {
+            case C.COLOR_SPACE_BT601:
+                return "BT.601";
+            case C.COLOR_SPACE_BT709:
+                return "BT.709";
+            case C.COLOR_SPACE_BT2020:
+                return "BT.2020";
+            default:
+                return NOT_AVAILABLE;
+        }
     }
 
     private String getRawDisplayResolution() {

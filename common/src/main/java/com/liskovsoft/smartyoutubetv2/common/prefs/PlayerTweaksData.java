@@ -47,6 +47,9 @@ public class PlayerTweaksData implements ProfileChangeListener {
             PLAYER_BUTTON_LIKE | PLAYER_BUTTON_DISLIKE | PLAYER_BUTTON_ADD_TO_PLAYLIST | PLAYER_BUTTON_PLAY_PAUSE |
             PLAYER_BUTTON_REPEAT_MODE | PLAYER_BUTTON_NEXT | PLAYER_BUTTON_PREVIOUS | PLAYER_BUTTON_HIGH_QUALITY |
             PLAYER_BUTTON_VIDEO_INFO | PLAYER_BUTTON_CHAT;
+    public static final int DNS_TYPE_SYSTEM = GlobalPreferences.DNS_TYPE_SYSTEM;
+    public static final int DNS_TYPE_IPV4 = GlobalPreferences.DNS_TYPE_IPV4;
+    public static final int DNS_TYPE_GOOGLE = GlobalPreferences.DNS_TYPE_GOOGLE;
     @SuppressLint("StaticFieldLeak")
     private static PlayerTweaksData sInstance;
     private final AppPrefs mPrefs;
@@ -96,7 +99,9 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsUnsafeAudioFormatsEnabled;
     private boolean mIsLoopShortsEnabled;
     private boolean mIsQuickSkipShortsEnabled;
+    private boolean mIsQuickSkipShortsAltEnabled;
     private boolean mIsQuickSkipVideosEnabled;
+    private boolean mIsQuickSkipVideosAltEnabled;
     private boolean mIsOculusQuestFixEnabled;
     private boolean mIsAudioFocusEnabled;
     private boolean mIsNetworkErrorFixingDisabled;
@@ -566,8 +571,24 @@ public class PlayerTweaksData implements ProfileChangeListener {
     }
 
     public void setQuickSkipShortsEnabled(boolean enable) {
+        resetSkipShortsSettings();
         mIsQuickSkipShortsEnabled = enable;
         persistData();
+    }
+
+    public boolean isQuickSkipShortsAltEnabled() {
+        return mIsQuickSkipShortsAltEnabled;
+    }
+
+    public void setQuickSkipShortsAltEnabled(boolean enable) {
+        resetSkipShortsSettings();
+        mIsQuickSkipShortsAltEnabled = enable;
+        persistData();
+    }
+
+    private void resetSkipShortsSettings() {
+        mIsQuickSkipShortsEnabled = false;
+        mIsQuickSkipShortsAltEnabled = false;
     }
 
     public boolean isQuickSkipVideosEnabled() {
@@ -575,7 +596,35 @@ public class PlayerTweaksData implements ProfileChangeListener {
     }
 
     public void setQuickSkipVideosEnabled(boolean enable) {
+        resetQuickSkipVideosSettings();
         mIsQuickSkipVideosEnabled = enable;
+        persistData();
+    }
+
+    public boolean isQuickSkipVideosAltEnabled() {
+        return mIsQuickSkipVideosAltEnabled;
+    }
+
+    public void setQuickSkipVideosAltEnabled(boolean enable) {
+        resetQuickSkipVideosSettings();
+        mIsQuickSkipVideosAltEnabled = enable;
+        persistData();
+    }
+
+    private void resetQuickSkipVideosSettings() {
+        mIsQuickSkipVideosEnabled = false;
+        mIsQuickSkipVideosAltEnabled = false;
+    }
+
+    public void resetDpadLeftRightSettings() {
+        mIsQuickSkipShortsEnabled = false;
+        mIsQuickSkipVideosEnabled = false;
+        persistData();
+    }
+
+    public void resetDpadUpDownSettings() {
+        mIsQuickSkipShortsAltEnabled = false;
+        mIsQuickSkipVideosAltEnabled = false;
         persistData();
     }
 
@@ -587,12 +636,12 @@ public class PlayerTweaksData implements ProfileChangeListener {
         MediaServiceData.instance().setFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS, enable);
     }
 
-    public boolean isIPv4DnsPreferred() {
-        return GlobalPreferences.instance(mPrefs.getContext()).isIPv4DnsPreferred();
+    public int getPreferredDnsType() {
+        return GlobalPreferences.instance(mPrefs.getContext()).getPreferredDnsType();
     }
 
-    public void setIPv4DnsPreferred(boolean prefer) {
-        GlobalPreferences.instance(mPrefs.getContext()).setIPv4DnsPreferred(prefer);
+    public void setPreferredDnsType(int dnsType) {
+        GlobalPreferences.instance(mPrefs.getContext()).setPreferredDnsType(dnsType);
     }
 
     public boolean isNetworkErrorFixingDisabled() {
@@ -689,6 +738,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsAudioFocusEnabled = Helpers.parseBoolean(split, 54, true);
         mIsDontResizeVideoToFitDialogEnabled = Helpers.parseBoolean(split, 55, false);
         mIsSuggestionsHorizontallyScrolled = Helpers.parseBoolean(split, 56, false);
+        mIsQuickSkipShortsAltEnabled = Helpers.parseBoolean(split, 57, false);
+        mIsQuickSkipVideosAltEnabled = Helpers.parseBoolean(split, 58, false);
 
         updateDefaultValues();
     }
@@ -715,7 +766,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mScreenOffDimmingPercents, mIsBootScreenOffEnabled, mIsPlayerUiOnNextEnabled, mIsPlayerAutoVolumeEnabled, mIsSyncRowButtonIndexEnabled,
                 mIsUnsafeAudioFormatsEnabled, null, mIsLoopShortsEnabled, mIsQuickSkipShortsEnabled, mIsRememberPositionOfLiveVideosEnabled,
                 mIsOculusQuestFixEnabled, null, mIsExtraLongSpeedListEnabled, mIsQuickSkipVideosEnabled, mIsNetworkErrorFixingDisabled, mIsCommentsPlacedLeft,
-                null, mIsAudioFocusEnabled, mIsDontResizeVideoToFitDialogEnabled, mIsSuggestionsHorizontallyScrolled
+                null, mIsAudioFocusEnabled, mIsDontResizeVideoToFitDialogEnabled, mIsSuggestionsHorizontallyScrolled,
+                mIsQuickSkipShortsAltEnabled, mIsQuickSkipVideosAltEnabled
                 ));
     }
 

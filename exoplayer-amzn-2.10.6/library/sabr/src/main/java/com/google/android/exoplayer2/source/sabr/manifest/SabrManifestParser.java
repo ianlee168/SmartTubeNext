@@ -13,14 +13,13 @@ import com.google.android.exoplayer2.source.sabr.manifest.SegmentBase.SegmentLis
 import com.google.android.exoplayer2.source.sabr.manifest.SegmentBase.SegmentTemplate;
 import com.google.android.exoplayer2.source.sabr.manifest.SegmentBase.SegmentTimelineElement;
 import com.google.android.exoplayer2.source.sabr.manifest.SegmentBase.SingleSegmentBase;
-import com.google.android.exoplayer2.source.sabr.protos.videostreaming.ClientInfo;
-import com.google.android.exoplayer2.source.sabr.protos.videostreaming.ClientName;
+import com.google.android.exoplayer2.source.sabr.protos.videostreaming.StreamerContext.ClientInfo;
+import com.google.android.exoplayer2.source.sabr.protos.videostreaming.StreamerContext.ClientName;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.MediaFormatComparator;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
@@ -706,6 +705,8 @@ public class SabrManifestParser {
         return ClientInfo.newBuilder()
                 .setClientName(ClientName.valueOf(clientInfo.getClientName()))
                 .setClientVersion(clientInfo.getClientVersion())
+                .setOsName(clientInfo.getOsName())
+                .setOsVersion(clientInfo.getOsVersion())
                 .build();
     }
 

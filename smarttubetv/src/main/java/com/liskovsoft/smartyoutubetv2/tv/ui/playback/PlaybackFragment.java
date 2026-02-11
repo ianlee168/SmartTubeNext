@@ -399,6 +399,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             mMediaSessionConnector.setPlayer(null);
         }
         if (mMediaSession != null) {
+            mMediaSession.setActive(false);
             mMediaSession.release();
         }
         if (mRowsAdapter != null) {
@@ -500,10 +501,9 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         }
 
         // NOTE: No way to disable only a notifications. We need to disable the media session instead.
-        //boolean disableNotifications = PlayerTweaksData.instance(getContext()).isPlaybackNotificationsDisabled();
+        boolean disableNotifications = PlayerTweaksData.instance(getContext()).isPlaybackNotificationsDisabled();
         mMediaSession = new MediaSessionCompat(getContext(), getContext().getPackageName());
-        //mMediaSession.setActive(!disableNotifications);
-        mMediaSession.setActive(Helpers.isAndroidTVLauncher(getContext()));
+        mMediaSession.setActive(!disableNotifications);
         mMediaSessionConnector = new MediaSessionConnector(mMediaSession);
 
         try {
@@ -1199,6 +1199,15 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         showOverlay(show);
 
         setPlayerRowIndex(0);
+    }
+
+    @Override
+    public int getButtonState(int buttonId) {
+        if (mPlayerGlue == null) {
+            return -1;
+        }
+
+        return mPlayerGlue.getButtonState(buttonId);
     }
 
     @Override

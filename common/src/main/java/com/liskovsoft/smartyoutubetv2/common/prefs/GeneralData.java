@@ -254,7 +254,7 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     public void setRemapDpadUpDownToSpeedEnabled(boolean enable) {
-        resetDpadUpSettings();
+        resetDpadUpDownSettings();
         mIsRemapDpadUpToSpeedEnabled = enable;
         persistState();
     }
@@ -264,14 +264,15 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     public void setRemapDpadUpToVolumeEnabled(boolean enable) {
-        resetDpadUpSettings();
+        resetDpadUpDownSettings();
         mIsRemapDpadUpToVolumeEnabled = enable;
         persistState();
     }
 
-    private void resetDpadUpSettings() {
+    public void resetDpadUpDownSettings() {
         mIsRemapDpadUpToSpeedEnabled = false;
         mIsRemapDpadUpToVolumeEnabled = false;
+        persistState();
     }
 
     public boolean isRemapDpadLeftToVolumeEnabled() {
@@ -279,7 +280,13 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     public void setRemapDpadLeftToVolumeEnabled(boolean enable) {
+        resetDpadLeftRightSettings();
         mIsRemapDpadLeftToVolumeEnabled = enable;
+        persistState();
+    }
+
+    public void resetDpadLeftRightSettings() {
+        mIsRemapDpadLeftToVolumeEnabled = false;
         persistState();
     }
 
@@ -774,6 +781,10 @@ public class GeneralData implements ProfileChangeListener {
         mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, -1);
     }
 
+    public void persistNow() {
+        Utils.post(mPersistStateInt);
+    }
+
     private void persistState() {
         Utils.postDelayed(mPersistStateInt, 10_000);
     }
@@ -795,10 +806,6 @@ public class GeneralData implements ProfileChangeListener {
                 mIsHideWatchedFromNotificationsEnabled, mChangelog, mPlayerExitShortcut, null, mIsFullscreenModeEnabled, null,
                 mIsRememberPinnedPositionEnabled, mSelectedItems, mIsFirstUseTooltipEnabled, mIsDeviceSpecificBackupEnabled, null,
                 mIsRemapPageDownToSpeedEnabled, mSearchExitShortcut, mGDriveBackupFreqDays, mLocalDriveBackupFreqDays));
-    }
-
-    public void persistNow() {
-        Utils.post(mPersistStateInt);
     }
 
     @Override
